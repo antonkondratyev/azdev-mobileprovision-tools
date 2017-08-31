@@ -1,0 +1,62 @@
+{
+  "manifestVersion": 1,
+  "id": "mobileprovision-tools",
+  "name": "MobileProvision Tools",
+  "version": "1.0.0",
+  "publisher": "kondratyevanton",
+  "public": true,
+  "description": "Tools for operation with mobile provisioning profiles",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "categories": [
+    "Build and release"
+  ],
+  "content": {
+    "details": {
+      "path": "README.md"
+    },
+    "license": {
+      "path": "LICENSE"
+    }
+  },
+  "icons": {
+    "default": "images/logo.png"
+  },
+  "scopes": [
+    "vso.build",
+    "vso.serviceendpoint"
+  ],
+  "contributions": [
+    {
+      "id": "mobileprovision-info",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "tasks/mobileprovision-info"
+      }
+    },
+    {
+      "id": "mobileprovision-updater",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "tasks/mobileprovision-updater"
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "tasks/mobileprovision-info"
+    },
+    {
+      "path": "tasks/mobileprovision-updater"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "id": "e9c30556-940b-4a22-8e48-df2acc3ba2c4",
+  "name": "MobileProvisionInfo",
+  "friendlyName": "MobileProvision Info",
+  "description": "MobileProvision Info",
+  "author": "Anton Kondratyev",
+  "category": "Deploy",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "helpMarkDown": "",
+  "icons": {
+    "default": "icon.png"
+  },
+  "demands": [],
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "minimumAgentVersion": "",
+  "instanceNameFormat": "MobileProvision Info",
+  "groups": [],
+  "inputs": [
+    {
+      "name": "provisionMethod",
+      "type": "radio",
+      "label": "Provision Using",
+      "defaultValue": "uuid",
+      "required": false,
+      "helpMarkDown": "Indicates the method used to provision.",
+      "options": {
+        "uuid": "Identifiers",
+        "file": "File Contents"
+      }
+    },
+    {
+      "name": "provProfileUuid",
+      "type": "string",
+      "label": "Provisioning Profile UUID",
+      "required": true,
+      "helpMarkDown": "UUID of an installed provisioning profile to be used for this build. Expects that the provisioning profile is installed in '~/Library/MobileDevice/Provisioning Profiles'.",
+      "visibleRule": "provisionMethod = uuid"
+    },
+    {
+      "name": "provProfilePath",
+      "type": "filePath",
+      "label": "Provisioning Profile Path",
+      "required": false,
+      "helpMarkDown": "Relative path to file containing provisioning profile.",
+      "visibleRule": "provisionMethod = file"
+    },
+    {
+      "name": "printProvisionedDevices",
+      "type": "boolean",
+      "label": "Print Provisioned Devices",
+      "defaultValue": false,
+      "required": false,
+      "helpMarkDown": ""
+    },
+    {
+      "name": "provisionedDevicesExportFile",
+      "type": "filePath",
+      "label": "Export Provisioned Devices to File",
+      "required": false,
+      "helpMarkDown": "$(System.DefaultWorkingDirectory)",
+      "visibleRule": "printProvisionedDevices = true"
+    }
+  ],
+  "execution": {
+    "Node": {
+      "target": "index.js",
+      "argumentFormat": ""
+    }
+  },
+  "messages": {}
+}

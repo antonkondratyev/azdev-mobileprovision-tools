@@ -1,0 +1,264 @@
+{
+  "id": "de283b14-8b67-46aa-b9cd-a15cc2dbf3a1",
+  "name": "MobileProvisionUpdater",
+  "friendlyName": "MobileProvision Updater",
+  "description": "Automatic Update Mobile Provisioning Profiles",
+  "author": "Anton Kondratyev",
+  "category": "Deploy",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "helpMarkDown": "",
+  "icons": {
+    "default": "icon.png"
+  },
+  "demands": [
+    "xcode"
+  ],
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "minimumAgentVersion": "",
+  "instanceNameFormat": "MobileProvision Updater",
+  "groups": [
+    {
+      "name": "parameters",
+      "displayName": "Profile Parameters",
+      "isExpanded": true
+    },
+    {
+      "name": "advanced",
+      "displayName": "Advanced Options",
+      "isExpanded": false
+    }
+  ],
+  "inputs": [
+    {
+      "name": "authType",
+      "type": "pickList",
+      "label": "Authentication Method",
+      "defaultValue": "ServiceEndpoint",
+      "helpMarkDown": "",
+      "options": {
+        "ServiceEndpoint": "Service Endpoint",
+        "UserAndPass": "Username and Password"
+      }
+    },
+    {
+      "name": "serviceEndpoint",
+      "type": "connectedService:apple-app-store",
+      "label": "Service Endpoint",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "The TFS/Team Services service endpoint that specifies the identity used to publish the app.",
+      "visibleRule": "authType = ServiceEndpoint"
+    },
+    {
+      "name": "username",
+      "type": "string",
+      "label": "Email",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "The email of the account used to publish to the Apple App Store.",
+      "visibleRule": "authType = UserAndPass"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "label": "Password",
+      "defaultValue": "",
+      "isConfidential": true,
+      "required": true,
+      "helpMarkDown": "The password of the account used to publish to the Apple App Store.",
+      "visibleRule": "authType = UserAndPass"
+    },
+    {
+      "name": "isTwoFactorAuth",
+      "type": "boolean",
+      "label": "Use Two-step Verification (Two-factor Authentication)",
+      "defaultValue": false,
+      "required": false,
+      "helpMarkDown": "Select if the Apple account above has two-step verification enabled. (See: https://appleid.apple.com/account/manage -> Security)",
+      "visibleRule": "authType = UserAndPass"
+    },
+    {
+      "name": "appSpecificPassword",
+      "type": "string",
+      "label": "App-specific Password",
+      "defaultValue": "",
+      "isConfidential": true,
+      "required": true,
+      "helpMarkDown": "The supplementary Apple-supplied password used with two-step verification enabled (See: https://appleid.apple.com/account/manage -> Security -> App-specific Passwords). Use a new variable with its lock enabled on the Variables tab to encrypt this value.",
+      "visibleRule": "isTwoFactorAuth = true"
+    },
+    {
+      "name": "fastlaneSession",
+      "type": "string",
+      "label": "Fastlane Session for Two-step Verification",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Used with two-step verification.  Create by running: 'fastlane spaceauth -u [email]'",
+      "visibleRule": "isTwoFactorAuth = true"
+    },
+    {
+      "name": "appIdentifier",
+      "type": "string",
+      "label": "Bundle ID",
+      "defaultValue": "",
+      "required": true,
+      "groupName": "parameters",
+      "helpMarkDown": "The unique app identifier (e.g. com.myapp.etc). Required if the track is Production."
+    },
+    {
+      "name": "profileType",
+      "type": "pickList",
+      "label": "Profile Type",
+      "defaultValue": "development",
+      "groupName": "parameters",
+      "helpMarkDown": "",
+      "options": {
+        "development": "Development",
+        "adHoc": "Ad Hoc",
+        "distribution": "Distribution"
+      }
+    },
+    {
+      "name": "provisionSelector",
+      "type": "pickList",
+      "label": "Profile Selector",
+      "defaultValue": "single",
+      "groupName": "parameters",
+      "helpMarkDown": "",
+      "options": {
+        "first": "First",
+        "latest": "Latest",
+        "single": "Single"
+      }
+    },
+    {
+      "name": "uuidVariable",
+      "type": "string",
+      "label": "UUID Variable",
+      "groupName": "parameters",
+      "required": false,
+      "defaultValue": "",
+      "helpMarkDown": "Provisioning Profile UUID Variable. "
+    },
+    {
+      "name": "profileName",
+      "type": "string",
+      "label": "Profile Name",
+      "required": false,
+      "groupName": "parameters",
+      "helpMarkDown": "The name will be used to identify the profile in the portal."
+    },
+    {
+      "name": "teamId",
+      "type": "string",
+      "label": "Team ID",
+      "required": false,
+      "groupName": "parameters",
+      "helpMarkDown": "The ID of your team if you are in multiple teams."
+    },
+    {
+      "name": "teamName",
+      "type": "string",
+      "label": "Team Name",
+      "required": false,
+      "groupName": "parameters",
+      "helpMarkDown": "The name of your team if you are in multiple teams."
+    },
+    {
+      "name": "storagePath",
+      "type": "string",
+      "label": "Storage Path",
+      "required": false,
+      "groupName": "advanced",
+      "helpMarkDown": "The storage path to .mobileprovision files that fastlane download. If undefined it is used from the $(System.DefaultWorkingDirectory) variable."
+    },
+    {
+      "name": "installFastlane",
+      "type": "boolean",
+      "label": "Install fastlane",
+      "required": false,
+      "defaultValue": true,
+      "groupName": "advanced",
+      "helpMarkDown": "Select to install a version of the fastlane tools.  Uncheck if your build machine already has the version of fastlane to use."
+    },
+    {
+      "name": "fastlaneToolsVersion",
+      "type": "pickList",
+      "label": "fastlane Version",
+      "defaultValue": "LatestVersion",
+      "options": {
+        "LatestVersion": "Latest Version",
+        "SpecificVersion": "Specific Version"
+      },
+      "groupName": "advanced",
+      "helpMarkDown": "Choose to install either the lastest version of fastlane or a specific version.",
+      "visibleRule": "installFastlane = true"
+    },
+    {
+      "name": "fastlaneToolsSpecificVersion",
+      "type": "string",
+      "label": "fastlane Specific Version",
+      "defaultValue": "",
+      "required": true,
+      "groupName": "advanced",
+      "helpMarkDown": "Provide the version of fastlane to install (e.g., 2.15.1).  If a specific version of fastlane is installed, all previously installed versions will be uninstalled beforehand.",
+      "visibleRule": "fastlaneToolsVersion = SpecificVersion"
+    },
+    {
+      "name": "noDocument",
+      "type": "boolean",
+      "label": "Disable Documentation Generation",
+      "required": false,
+      "defaultValue": true,
+      "groupName": "advanced",
+      "helpMarkDown": "",
+      "visibleRule": "installFastlane = true"
+    },
+    {
+      "name": "fastlaneCleanup",
+      "type": "boolean",
+      "label": "Cleanup Previous Versions",
+      "required": false,
+      "defaultValue": false,
+      "groupName": "advanced",
+      "helpMarkDown": "Cleanup previous versions before install fastlane",
+      "visibleRule": "installFastlane = true && fastlaneToolsVersion = LatestVersion"
+    },
+    {
+      "name": "verboseFastlane",
+      "type": "boolean",
+      "label": "Verbose fastlane",
+      "required": false,
+      "defaultValue": false,
+      "groupName": "advanced",
+      "helpMarkDown": ""
+    },
+    {
+      "name": "fastlaneArguments",
+      "type": "multiLine",
+      "label": "Additional fastlane arguments",
+      "defaultValue": "",
+      "required": false,
+      "properties": {
+        "resizable": true,
+        "rows": "2"
+      },
+      "groupName": "advanced",
+      "helpMarkDown": "Any additional arguments to pass to the fastlane command."
+    }
+  ],
+  "execution": {
+    "Node": {
+      "target": "index.js",
+      "argumentFormat": ""
+    }
+  },
+  "messages": {}
+}

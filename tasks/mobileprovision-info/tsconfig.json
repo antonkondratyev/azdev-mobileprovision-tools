@@ -1,0 +1,20 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES6",
+    "declaration": true,
+    "removeComments": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmitOnError": false,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "preserveConstEnums": true,
+    "sourceMap": false
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
